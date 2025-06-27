@@ -1,0 +1,104 @@
+<html>
+<head>
+	<title>Welcome to register page</title>
+	<script>
+		//Some data constrants
+		const countriesData = [
+		{value:"eg", text: 'Egypt' , selected: true },
+		{value:"us", text: 'USA' },
+		{value:"zm", text: 'Zambia' },
+		];
+		const egUniv = [
+		{value:"eg1", text: 'AAST' , selected: true },
+                {value:"eg2", text: 'Alex' },
+                {value:"eg3", text: 'Cairo' },
+		];
+		const usUniv = [
+                {value:"us1", text: 'USA Univ 1' , selected: true },
+                {value:"us2", text: 'USA Univ 2' },
+                {value:"us3", text: 'USA Univ 3' },
+                ];
+		const zmUniv = [
+                {value:"zm1", text: 'ZM Univ 1' , selected: true },
+                {value:"zm2", text: 'ZM Univ 2' },
+                {value:"zm3", text: 'ZM Univ3'  },
+                ];
+
+		function clearContent(obj) {
+			obj.value="";
+		}
+		function changeun(obj) {
+			if ( obj.value != "none")
+				setuniv(obj.value);
+		}
+		function setDefaults() {
+			const countriesSelect = document.getElementById('countries');
+			countriesData.forEach(singleCountry => {
+				const option = document.createElement('option');
+				option.value = singleCountry.value;
+				option.textContent = singleCountry.text;
+				if ( singleCountry.selected ) {
+					option.selected = true;
+					setuniv(option.value);
+				}
+				countriesSelect.appendChild(option);
+				
+			}); 	//foreach
+		}
+		function setuniv(country) {
+		const univSelect = document.getElementById('univ');
+			dataSet = null;
+			if ( country == "eg") {
+				dataSet = egUniv;
+			}
+			if ( country == "us" ) {
+				dataSet = usUniv;
+			}
+			if ( country == "zm" ) {
+				dataSet = zmUniv;
+			}
+			if ( dataSet != null ) {
+				univSelect.options.length = 0;	
+				dataSet.forEach(singleUniv => {
+                                const option = document.createElement('option');
+                                option.value = singleUniv.value;
+                                option.textContent = singleUniv.text;
+                                if ( singleUniv.selected ) {
+                                        option.selected = true;
+                                }
+                                univSelect.appendChild(option);
+                        	});     //foreach
+			}
+		}
+	</script>
+</head>
+<body onload="setDefaults()">
+<center><h1>Welcome to ECPC Registration page</h1></center>
+<form name="regfrm" >
+<table width=100%>
+	<tr>
+		<td width=10%>Username </td>
+		<td width=90%><input type=text name=username value="Enter your username" onclick="clearContent(this)"></td>
+	</tr>
+        <tr>
+                <td width=10%>Password </td>
+                <td width=90%><input type=password name=userpassword value="Enter your Password" onclick="clearContent(this)"></td>
+        </tr>
+        <tr>
+                <td width=10%>Country </td>
+                <td width=90%>
+			<select id="countries" name="countries" onchange="changeun(this)">
+			</select>
+		</td>
+        </tr>	
+        <tr>
+                <td width=10%>Universties </td>
+                <td width=90%>
+                        <select id="univ" name="univ" onchange="changeun(this)">
+                        </select>
+                </td>
+        </tr>  
+</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<html>
+<head>
+	<title>Welcome to register page</title>
+	<script>
+		//Some data constrants
+		function clearContent(obj) {
+			obj.value="";
+		}
+		function changeun(obj) {
+			if ( obj.value != "none")
+				setuniv(obj.value);
+		}
+		function setDefaults() {
+			fetch('/api/getcountries.php') // Replace with your API endpoint
+  			.then(response => {
+    				if (!response.ok) {
+      					throw new Error(`HTTP error! status: ${response.status}`);
+    				}
+    				return response.json(); // Or .text() for plain text, .blob() for binary data, etc.
+  				})
+  				.then(data => {
+    					// Process the received data here
+                        		const countriesSelect = document.getElementById('countries');
+                        		data.forEach(singleCountry => {
+                                	const option = document.createElement('option');
+                                	option.value = singleCountry.id;
+                                	option.textContent = singleCountry.name;
+                                	if ( singleCountry.selected == 1 ) {
+                                        	option.selected = true;
+                                        	setuniv(singleCountry.id);
+                                	}
+                                	countriesSelect.appendChild(option);
+                        		});     //foreach
+  				})
+  				.catch(error => {
+    					console.error('Error fetching data:', error);
+  				});
+		}
+		function setuniv(country) {
+		const univSelect = document.getElementById('univ');
+				univSelect.options.length = 0;	
+				fetch('/api/getuniv.php?cid='+country) // Replace with your API endpoint
+                        	.then(response => {
+                                if (!response.ok) {
+                                        throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                                return response.json(); // Or .text() for plain text, .blob() for binary data, etc.
+                                })
+                                .then(data => {
+                                        // Process the received data here
+					data.forEach(singleUniv => {
+                                	const option = document.createElement('option');
+                                	option.value = singleUniv.id;
+                                	option.textContent = singleUniv.name;
+                                	if ( singleUniv.selected == 1 ) {
+                                        	option.selected = true;
+                                	}
+                                	univSelect.appendChild(option);
+                                	});
+                                })
+                                .catch(error => {
+                                        console.error('Error fetching data:', error);
+                                });
+		}
+	</script>
+</head>
+<body onload="setDefaults()">
+<center><h1>Welcome to ECPC Registration page</h1></center>
+<form name="regfrm" >
+<table width=100%>
+	<tr>
+		<td width=10%>Username </td>
+		<td width=90%><input type=text name=username value="Enter your username" onclick="clearContent(this)"></td>
+	</tr>
+        <tr>
+                <td width=10%>Password </td>
+                <td width=90%><input type=password name=userpassword value="Enter your Password" onclick="clearContent(this)"></td>
+        </tr>
+        <tr>
+                <td width=10%>Country </td>
+                <td width=90%>
+			<select id="countries" name="countries" onchange="changeun(this)">
+			</select>
+		</td>
+        </tr>	
+        <tr>
+                <td width=10%>Universties </td>
+                <td width=90%>
+                        <select id="univ" name="univ" onchange="changeun(this)">
+                        </select>
+                </td>
+        </tr>  
+</table>
+</form>
+</body>
+</html>
